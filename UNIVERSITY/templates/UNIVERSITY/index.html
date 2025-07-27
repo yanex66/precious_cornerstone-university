@@ -1,0 +1,109 @@
+{# precious_cornerstone/UNIVERSITY/templates/UNIVERSITY/index.html #}
+{% extends 'UNIVERSITY/base.html' %}
+{% load static %} {# Make sure to load static for any potential images/icons later #}
+
+{% block title %}Home - {{ university_name }}{% endblock title %}
+
+{% block content %}
+    <main class="container"> {# Wrap entire content in main container #}
+        <div class="hero-section text-center bg-white p-8 rounded-lg shadow-lg mb-8"> {# Added styling to hero section #}
+            <h1 class="text-4xl font-bold mb-4">Welcome to <span class="highlight text-royal-blue">{{ university_name }}</span>!</h1>
+            <p class="lead-text text-lg text-gray-700 mb-6">
+                Fostering innovation, knowledge, and leadership for a brighter future.
+                Our commitment is to academic excellence and holistic development.
+            </p>
+            {% if user.is_authenticated %}
+                <p class="text-md text-gray-800 mb-4">Welcome back, <span class="highlight text-royal-blue">{{ user.username }}</span>! Explore your dashboard or university resources below.</p>
+                {# You could add a specific dashboard link here if you create one later #}
+                {# <a href="{% url 'user_dashboard' %}" class="btn btn-primary mt-4">Go to Dashboard</a> #}
+            {% else %}
+                <p class="text-md text-gray-800 mb-4">Ready to join our community?</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4 mt-4"> {# Flex container for login/register buttons #}
+                    <a href="{% url 'login' %}" class="btn btn-primary w-full sm:w-auto">Login to Your Account</a>
+                    {# If you implement registration, uncomment the line below #}
+                    <a href="{% url 'register' %}" class="btn btn-secondary w-full sm:w-auto">Apply Now</a>
+                </div>
+            {% endif %}
+        </div>
+
+        {# NEW POSITION: Latest News & Announcements moved up #}
+        <section class="section-block news-announcements bg-white p-8 rounded-lg shadow-lg mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-royal-blue">Latest News & Announcements</h2>
+            <div class="news-feed grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"> {# Grid for news items #}
+                <article class="news-item border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <h3 class="text-xl font-semibold mb-2 text-dark-slate-gray">New Academic Year Commences!</h3>
+                    <p class="news-date text-sm text-gray-500 mb-2">July 24, 2025</p>
+                    <p class="text-gray-700 mb-4">We are thrilled to welcome new and returning students for the 2025/2026 academic session. Classes begin next week!</p>
+                    <a href="#" class="read-more text-royal-blue hover:underline">Read More &raquo;</a>
+                </article>
+                <article class="news-item border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <h3 class="text-xl font-semibold mb-2 text-dark-slate-gray">Research Grant Opportunities</h3>
+                    <p class="news-date text-sm text-gray-500 mb-2">July 15, 2025</p>
+                    <p class="text-gray-700 mb-4">Faculty and postgraduate students are invited to apply for the annual research innovation grants. Deadline approaching.</p>
+                    <a href="#" class="read-more text-royal-blue hover:underline">Read More &raquo;</a>
+                </article>
+                <article class="news-item border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <h3 class="text-xl font-semibold mb-2 text-dark-slate-gray">Campus Beautification Project Launched</h3>
+                    <p class="news-date text-sm text-gray-500 mb-2">July 10, 2025</p>
+                    <p class="text-gray-700 mb-4">Join us in making our campus greener and more beautiful. Volunteer opportunities available.</p>
+                    <a href="#" class="read-more text-royal-blue hover:underline">Read More &raquo;</a>
+                </article>
+            </div>
+            <p class="text-center mt-8"><a href="#" class="btn btn-secondary">View All News (Coming Soon)</a></p>
+        </section>
+
+        {# ORIGINAL POSITION: Discover Our University #}
+        <section class="section-block bg-white p-8 rounded-lg shadow-lg mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-royal-blue">Discover Our University</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"> {# Responsive grid for discovery items #}
+                <div class="grid-item border border-gray-200 rounded-lg p-4 text-center hover:shadow-md transition-shadow">
+                    <h3 class="text-xl font-semibold mb-2 text-dark-slate-gray">Academics</h3>
+                    <p class="text-gray-700 mb-4">Explore our wide range of programs, departments, and research opportunities.</p>
+                    <a href="{% url 'course_list' %}" class="btn btn-secondary btn-sm">View Courses</a>
+                </div>
+                <div class="grid-item border border-gray-200 rounded-lg p-4 text-center hover:shadow-md transition-shadow">
+                    <h3 class="text-xl font-semibold mb-2 text-dark-slate-gray">Admissions</h3>
+                    <p class="text-gray-700 mb-4">Learn about our admission requirements, application process, and important dates.</p>
+                    <a href="#" class="btn btn-secondary btn-sm">Apply Now (Coming Soon)</a>
+                </div>
+                <div class="grid-item border border-gray-200 rounded-lg p-4 text-center hover:shadow-md transition-shadow">
+                    <h3 class="text-xl font-semibold mb-2 text-dark-slate-gray">Campus Life</h3>
+                    <p class="text-gray-700 mb-4">Experience vibrant student life, clubs, events, and campus facilities.</p>
+                    <a href="#" class="btn btn-secondary btn-sm">Learn More (Coming Soon)</a>
+                </div>
+                <div class="grid-item border border-gray-200 rounded-lg p-4 text-center hover:shadow-md transition-shadow">
+                    <h3 class="text-xl font-semibold mb-2 text-dark-slate-gray">About Us</h3>
+                    <p class="text-gray-700 mb-4">Our mission, vision, history, and commitment to excellence.</p>
+                    <a href="#" class="btn btn-secondary btn-sm">Read More (Coming Soon)</a>
+                </div>
+            </div>
+        </section>
+
+        {# ORIGINAL POSITION: Quick Access to Management Systems (now at the bottom) #}
+        <section class="section-block call-to-action-section bg-white p-8 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-bold mb-6 text-royal-blue">Quick Access to Management Systems</h2>
+            <p class="text-gray-700 mb-6">For faculty, staff, and administrators, quickly navigate to core operational areas:</p>
+            <div class="quick-links-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"> {# Responsive grid for quick links #}
+                <a href="{% url 'course_list' %}" class="quick-link-btn">
+                    <i class="fas fa-book-open text-3xl mb-2"></i> Courses
+                </a>
+                <a href="{% url 'student_list' %}" class="quick-link-btn">
+                    <i class="fas fa-user-graduate text-3xl mb-2"></i> Students
+                </a>
+                <a href="{% url 'employee_list' %}" class="quick-link-btn">
+                    <i class="fas fa-users text-3xl mb-2"></i> Employees
+                </a>
+                <a href="{% url 'leave_list' %}" class="quick-link-btn">
+                    <i class="fas fa-calendar-alt text-3xl mb-2"></i> Leave Requests
+                </a>
+                <a href="{% url 'payroll_list' %}" class="quick-link-btn">
+                    <i class="fas fa-money-check-alt text-3xl mb-2"></i> Payroll
+                </a>
+                {# Added a link to the admin panel directly, although it's also in the header #}
+                <a href="{% url 'admin:index' %}" class="quick-link-btn">
+                    <i class="fas fa-cogs text-3xl mb-2"></i> Admin Panel
+                </a>
+            </div>
+        </section>
+    </main>
+{% endblock content %}

@@ -1,0 +1,35 @@
+{# precious_cornerstone/UNIVERSITY/templates/UNIVERSITY/employee_detail.html #}
+{% extends 'UNIVERSITY/base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ university_name }} - {{ employee.first_name }} {{ employee.last_name }}
+{% endblock title %}
+
+{% block content %}
+    <main class="container"> {# Added main container for consistent padding and styling #}
+        <h1 class="text-3xl font-bold mb-6">Employee Details: {{ employee.first_name }} {{ employee.last_name }}</h1>
+
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6"> {# Added div for details card styling #}
+            <p class="mb-2"><strong>Email:</strong> {{ employee.email }}</p>
+            <p class="mb-2"><strong>Phone:</strong> {{ employee.phone_number|default:"N/A" }}</p>
+            <p class="mb-2"><strong>Date of Birth:</strong> {{ employee.date_of_birth|date:"F d, Y"|default:"N/A" }}</p>
+            <p class="mb-2"><strong>Gender:</strong> {{ employee.get_gender_display|default:"N/A" }}</p>
+            <p class="mb-2"><strong>Hire Date:</strong> {{ employee.hire_date|date:"F d, Y" }}</p>
+            <p class="mb-2"><strong>Position:</strong> {{ employee.position }}</p>
+            <p class="mb-2"><strong>Department:</strong> {{ employee.department }}</p>
+            <p class="mb-2"><strong>Salary:</strong> {{ employee.salary|default:"N/A" }}</p>
+            <p class="mb-0"><strong>Status:</strong> {% if employee.is_active %}Active{% else %}Inactive{% endif %}</p>
+        </div>
+
+        {# Flex container for action buttons #}
+        <div class="flex flex-col sm:flex-row items-center sm:justify-start gap-4 mt-6 space-y-2 sm:space-y-0">
+            <a href="{% url 'employee_update' employee.id %}" class="btn btn-primary w-full sm:w-auto">Edit Employee</a>
+            <a href="{% url 'employee_delete' employee.id %}" class="btn btn-danger w-full sm:w-auto">Delete Employee</a>
+        </div>
+
+        <div class="mt-4"> {# Added div for spacing for the back button #}
+            <a href="{% url 'employee_list' %}" class="btn btn-secondary">Back to Employee List</a>
+        </div>
+    </main>
+{% endblock content %}

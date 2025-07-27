@@ -1,0 +1,794 @@
+/* precious_cornerstone/UNIVERSITY/static/UNIVERSITY/css/style.css */
+
+/* Google Fonts - Inter (clean sans-serif) and Playfair Display (playful academic, optional) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:400;700&display=swap');
+
+/* Color Palette Variables */
+:root {
+    --royal-blue: #1E3A8A;
+    --crisp-white: #F9FAFB;
+    --radiant-gold: #FBBF24;
+    --sky-blue: #60A5FA;
+    --lilac: #C084FC;
+    --dark-slate-gray: #1F2937;
+    --text-dark: #374151;
+    --text-light: #D1D5DB;
+    --accent-light: #E5E7EB;
+
+    /* Custom variables for the new background gradient */
+    --university-blue-dark: #1E3A8A;
+    --university-blue-light: #60A5FA;
+    --university-purple-light: #C084FC;
+    --university-gold: #FBBF24;
+}
+
+/* Base Styles */
+html {
+    overflow-x: hidden; /* Prevents horizontal scroll from HTML element */
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    /* Background gradient for the entire page to fill blank space */
+    background: linear-gradient(135deg, var(--university-blue-light) 0%, var(--university-purple-light) 100%);
+    color: var(--text-dark);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden; /* Prevents horizontal scroll from body element */
+    position: relative; /* Crucial for containing the page-wrapper for transform */
+}
+
+/* Prevent body scrolling when sidebar is open (controlled by JS) */
+body.overflow-hidden {
+    overflow: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px; /* Default padding for desktop */
+    box-sizing: border-box; /* Include padding in element's total width */
+}
+
+/* Global image responsiveness */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Removes extra space below images */
+}
+
+/* Page Wrapper styles */
+.page-wrapper {
+    flex-grow: 1; /* Allows it to take up available space */
+    display: flex; /* Keep flex to manage header/main/footer */
+    flex-direction: column;
+    width: 100%; /* Important for proper transformation */
+    transition: transform 0.3s ease, filter 0.3s ease; /* Smooth transition for shifting */
+    position: relative; /* Creates a stacking context */
+    z-index: 10; /* Lower than overlay and sidebar */
+}
+
+.page-wrapper.shifted {
+    transform: translateX(-280px); /* Adjust based on sidebar width */
+    /* Optional: You can add scale or other transforms for a different effect */
+    /* transform: translateX(-280px) scale(0.95); */
+    /* filter: brightness(0.7); */ /* Optional: dim the background */
+}
+
+
+/* Header & Navigation */
+header {
+    background: linear-gradient(to right, var(--royal-blue), var(--sky-blue));
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    padding: 20px 0;
+    position: sticky; /* Keep sticky for scrolling header */
+    top: 0;
+    z-index: 10; /* This z-index is for the header itself, relative to page-wrapper */
+    backdrop-filter: blur(8px);
+    transition: all 0.4s ease-in-out;
+}
+
+/* Header container for desktop layout */
+.header-container {
+    display: flex;
+    justify-content: flex-start; /* Align logo to the start */
+    align-items: center;
+    gap: 15px;
+}
+
+.site-branding {
+    display: flex;
+    align-items: center;
+    flex-grow: 1; /* Allows branding to take up remaining space */
+    min-width: 0;
+}
+
+.site-branding h1 {
+    margin: 0;
+}
+
+.site-branding h1 a {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-decoration: none;
+    transition: none;
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.site-logo {
+    max-height: 60px;
+    width: auto;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+}
+
+.site-logo:hover {
+    transform: scale(1.05);
+}
+
+.site-title-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1em;
+    font-weight: 700;
+    color: var(--crisp-white);
+    white-space: nowrap;
+    flex-shrink: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Overlay for sidebar */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    z-index: 9990; /* Just below the sidebar */
+    visibility: hidden; /* Hidden by default */
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transform: translateZ(0); /* Force new stacking context */
+}
+
+.overlay.is-active {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+/* Main Navigation (ALWAYS a sidebar now) */
+.main-nav {
+    position: fixed;
+    top: 0;
+    right: -280px;
+    width: 280px;
+    height: 100%;
+    background-color: var(--royal-blue);
+    flex-direction: column;
+    padding-top: 80px !important;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.5);
+    transition: right 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    z-index: 9999 !important; /* Extremely high z-index to be on top */
+    align-items: flex-start;
+    overflow-y: auto !important;
+    display: flex;
+    visibility: hidden;
+    box-sizing: border-box;
+    transform: translateZ(0); /* Force new stacking context */
+}
+
+.main-nav.is-open {
+    right: 0;
+    visibility: visible;
+}
+
+/* Nav Links Styling (for the sidebar) */
+.nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 5px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.nav-links li {
+    margin: 0;
+    width: 100%;
+}
+
+.nav-links a {
+    color: var(--crisp-white);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95em;
+    padding: 8px 20px;
+    display: block;
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.nav-links a:hover {
+    color: var(--radiant-gold);
+    background-color: rgba(255, 255, 255, 0.08);
+    transform: none;
+}
+
+/* Disable the custom ::after hover effect for sidebar links as it doesn't fit the vertical design */
+.nav-links a::after {
+    content: none;
+}
+
+/* Auth Links Styling (for the sidebar) */
+.auth-links {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-left: 0;
+    padding: 8px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    align-items: flex-start;
+    gap: 5px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    margin-top: auto;
+}
+
+.auth-links .user-greeting {
+    margin-right: 0;
+    margin-bottom: 0;
+    color: var(--radiant-gold);
+    font-weight: 600;
+    white-space: normal;
+    word-break: break-word;
+    text-align: left;
+    font-size: 0.9em;
+}
+
+.auth-links .button {
+    width: 100%;
+    text-align: center;
+    margin-top: 0;
+    box-sizing: border-box;
+    padding: 6px 10px;
+    font-size: 0.9em;
+}
+
+/* Button Styling (for login/logout/general) */
+.button {
+    display: inline-block;
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    white-space: nowrap;
+}
+
+.login-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.logout-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+.button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* Disable glow for login/logout buttons */
+.button.login-btn::before,
+.button.logout-btn::before {
+    content: none;
+}
+
+.inline-form {
+    display: inline;
+}
+
+/* Hamburger Menu Toggle (NEW POSITIONING) */
+.menu-toggle {
+    position: fixed; /* Fixed position relative to viewport */
+    top: 10px; /* Adjust as needed for desired vertical position */
+    right: 10px; /* Adjust as needed for desired horizontal position */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 10000; /* Higher than sidebar and overlay */
+    color: white;
+    width: 40px;
+    height: 40px;
+    box-sizing: content-box;
+    transition: all 0.3s ease-in-out; /* Smooth transition for any future movement */
+    /* Ensure it's always visible */
+    display: block !important;
+    opacity: 1 !important;
+}
+
+/* Hamburger lines styling */
+.hamburger-line {
+    display: block !important;
+    width: 25px !important;
+    height: 3px !important;
+    background-color: white !important;
+    margin: 5px 0 !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Main Content Area */
+main {
+    flex-grow: 1;
+    background-color: var(--crisp-white);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    margin: 30px auto;
+    animation: fadeIn 0.8s ease-out forwards;
+    opacity: 0;
+    box-sizing: border-box;
+    z-index: 1; /* Ensure main content is below everything else */
+    position: relative; /* Add position to ensure z-index works */
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    color: var(--royal-blue);
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+h1 { font-size: 2.8em; }
+h2 { font-size: 2.2em; }
+h3 { font-size: 1.8em; }
+
+/* Paragraphs and general text */
+p {
+    margin-bottom: 15px;
+    color: var(--text-dark);
+}
+
+/* Links (general) */
+a {
+    color: var(--royal-blue);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--radiant-gold);
+    text-decoration: underline;
+}
+
+/* Buttons (General, if not using .login-btn/.logout-btn) */
+.btn {
+    display: inline-block;
+    background-color: var(--royal-blue);
+    color: var(--crisp-white);
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.btn:hover {
+    background-color: var(--radiant-gold);
+    color: var(--dark-slate-gray);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(251, 191, 36, 0.4);
+}
+
+/* Glowing effect for .btn */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+    z-index: -1;
+}
+
+.btn:hover::before {
+    width: 200px;
+    height: 200px;
+}
+
+/* Secondary Button Style */
+.btn-secondary {
+    background-color: var(--sky-blue);
+    color: var(--crisp-white);
+}
+
+.btn-secondary:hover {
+    background-color: var(--lilac);
+    box-shadow: 0 5px 15px rgba(192, 132, 252, 0.4);
+}
+
+/* Danger Button Style (e.g., Delete) */
+.btn-danger {
+    background-color: #EF4444;
+    color: var(--crisp-white);
+}
+
+.btn-danger:hover {
+    background-color: #DC2626;
+    box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+}
+
+
+/* Forms */
+form {
+    background-color: var(--crisp-white);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+form p {
+    margin-bottom: 15px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--royal-blue);
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="number"],
+form input[type="date"],
+form select,
+form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    font-size: 1em;
+    color: var(--text-dark);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+}
+
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form input[type="password"]:focus,
+form input[type="number"]:focus,
+form input[type="date"]:focus,
+form select:focus,
+form textarea:focus {
+    border-color: var(--sky-blue);
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.3);
+    outline: none;
+}
+
+form button[type="submit"] {
+    margin-top: 20px;
+}
+
+/* Tables (General, Desktop) */
+table {
+    width: 100%;
+    border-collapse: separate; /* Changed from 'collapse' to 'separate' for border-radius on main table */
+    border-spacing: 0;
+    margin-top: 20px;
+    background-color: var(--crisp-white);
+    border-radius: 10px; /* Applies to the whole table */
+    overflow: hidden; /* Ensures border-radius crops content */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+table th, table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+table th {
+    background-color: var(--royal-blue);
+    color: var(--crisp-white);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    letter-spacing: 0.05em;
+}
+
+table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+table tbody tr:hover {
+    background-color: var(--accent-light);
+    transition: background-color 0.2s ease;
+}
+
+table td a {
+    font-weight: 500;
+}
+
+/* Footer */
+footer {
+    background: linear-gradient(to right, var(--royal-blue), var(--sky-blue));
+    color: var(--crisp-white);
+    padding: 30px 0;
+    margin-top: auto;
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    z-index: 10; /* Ensure footer is below the overlay and sidebar */
+    position: relative; /* Add position to ensure z-index works */
+}
+
+footer p {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Utility classes for specific scenarios */
+.text-center { text-align: center; }
+.mb-20 { margin-bottom: 20px; }
+.mb-10 { margin-bottom: 10px; }
+.mb-5 { margin-bottom: 5px; }
+.mt-20 { margin-top: 20px; }
+.mt-10 { margin-top: 10px; }
+.mt-5 { margin-top: 5px; }
+.flex-group { display: flex; gap: 10px; align-items: center; }
+
+/*
+    RESPONSIVE ADJUSTMENTS:
+    This section now *only* contains rules that are specifically for the main content
+    area and table responsiveness, or minor header adjustments.
+    All navigation/sidebar specific rules are in the global scope now.
+*/
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    /* Override any potential Tailwind h-12 w-auto to ensure site-logo sizing */
+    .site-logo {
+        max-height: 40px !important;
+        width: auto !important;
+        margin-right: 8px !important;
+        min-width: 35px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .site-title-text {
+        font-size: 0.85em !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+        line-height: 1.2 !important;
+        flex-shrink: 1 !important;
+        margin-right: 10px !important;
+        text-align: left !important;
+    }
+
+    .header-container {
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+        display: flex !important;
+        justify-content: flex-start !important; /* Only need to align start for logo */
+        align-items: center !important;
+        gap: 10px !important;
+    }
+
+    .site-branding h1 a {
+        max-width: calc(100% - 70px) !important; /* Adjust if needed based on new button size/position */
+        gap: 10px !important;
+        flex-shrink: 1 !important;
+    }
+
+    /* .menu-toggle will be positioned fixed, so no need for flex properties here */
+    /* Removed: .menu-toggle { margin-left: auto !important; } */
+
+    main {
+        padding: 25px !important;
+        margin: 20px auto !important;
+    }
+
+    h1 { font-size: 2.2em !important; }
+    h2 { font-size: 1.8em !important; }
+
+    /* Responsive Table Styles (Cards on Mobile) */
+    table {
+        border: 0 !important; /* Remove main table border */
+        border-radius: 0 !important; /* Remove main table border-radius */
+        box-shadow: none !important; /* Remove main table shadow */
+    }
+
+    table thead {
+        display: none !important; /* Hide table headers on small screens */
+    }
+
+    table, tbody, tr, td {
+        display: block !important; /* Make table elements behave like block-level elements */
+        width: 100% !important; /* Make them take full width */
+    }
+
+    table tr {
+        border: 1px solid #E5E7EB !important;
+        margin-bottom: 15px !important;
+        border-radius: 8px !important;
+        overflow: hidden !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important; /* Add shadow to individual "cards" */
+        padding: 10px !important; /* Padding for the entire "row" block */
+    }
+
+    table td {
+        border: none !important; /* Remove individual cell borders */
+        border-bottom: 1px solid #eee !important; /* Add a separator between "cells" */
+        position: relative !important;
+        padding: 8px 15px !important; /* Reduced overall padding for cells */
+        text-align: left !important; /* Align content to the left */
+        word-wrap: break-word; /* Ensure long words break */
+        min-height: 25px; /* Ensure a minimum height for cells */
+        display: flex; /* Make td a flex container */
+        flex-direction: column; /* Stack label and content vertically */
+        align-items: flex-start; /* Align items to the start */
+    }
+
+    table td::before {
+        content: attr(data-label) !important;
+        display: block !important; /* Make the pseudo-element a block */
+        width: 100% !important; /* Ensure it takes full width */
+        padding-right: 0 !important; /* Remove right padding */
+        white-space: normal !important; /* Allow labels to wrap if very long */
+        text-align: left !important;
+        font-weight: 600 !important;
+        color: var(--royal-blue) !important;
+        margin-bottom: 5px; /* Increased space between label and content */
+        border-bottom: 1px solid var(--accent-light); /* Add a subtle divider */
+        padding-bottom: 5px; /* Padding for the border */
+    }
+
+    /* New style for the content wrapper within td */
+    .table-cell-content {
+        display: block; /* Ensure it takes its own line */
+        width: 100%; /* Take full width available */
+        word-wrap: break-word; /* Ensure content wraps */
+        white-space: normal; /* Allow content to wrap */
+        padding-top: 5px; /* Space above the content */
+    }
+
+
+    /* Special adjustment for Description field on mobile, it might need more space */
+    table td[data-label="Description"] {
+        text-align: left !important; /* Description should be left-aligned for readability */
+        padding-left: 15px !important; /* Reset padding for description */
+    }
+    table td[data-label="Description"]::before {
+        display: block !important; /* Force label to be on its own line */
+        position: static !important; /* Allow label to flow naturally */
+        width: auto !important;
+        padding: 0 !important;
+        margin-bottom: 5px !important; /* Space between label and description text */
+        text-align: left !important;
+    }
+
+    /* Course Detail Page Specific Adjustments (if using .course-detail-card) */
+    .course-detail-card {
+        padding: 25px !important;
+        margin: 20px 15px !important; /* Adjust margins for smaller screens */
+    }
+
+    .course-detail-card h1 {
+        font-size: 1.8em !important;
+        margin-bottom: 20px !important;
+        padding-bottom: 10px !important;
+    }
+
+    .course-detail-card .detail-label {
+        font-size: 1em !important;
+    }
+
+    .course-detail-card .detail-value {
+        font-size: 0.95em !important;
+    }
+
+    .course-detail-card .course-description-full {
+        padding: 15px !important;
+    }
+
+    .course-detail-card .detail-actions {
+        flex-direction: column !important; /* Stack buttons vertically */
+        gap: 10px !important;
+        justify-content: center !important;
+        align-items: center !important; /* Center buttons */
+    }
+
+    .course-detail-card .detail-actions .btn {
+        width: 100% !important; /* Make buttons full width */
+        text-align: center !important;
+    }
+}
+
+
+
+
+/* Quick Link Buttons (NEW STYLES) */
+.quick-link-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: var(--royal-blue);
+    color: var(--crisp-white);
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1em;
+    transition: all 0.3s ease;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.quick-link-btn:hover {
+    background-color: var(--sky-blue);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    color: var(--crisp-white); /* Ensure text color remains white on hover */
+    text-decoration: none; /* Remove underline on hover */
+}
+
+.quick-link-btn i {
+    margin-bottom: 10px; /* Space between icon and text */
+    font-size: 3em; /* Larger icon size */
+    color: var(--radiant-gold); /* Icon color */
+    transition: color 0.3s ease;
+}
+
+.quick-link-btn:hover i {
+    color: var(--crisp-white); /* Change icon color on hover */
+}

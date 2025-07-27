@@ -1,0 +1,33 @@
+{# precious_cornerstone/UNIVERSITY/templates/UNIVERSITY/student_detail.html #}
+{% extends 'UNIVERSITY/base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ university_name }} - {{ student.first_name }} {{ student.last_name }}
+{% endblock title %}
+
+{% block content %}
+    <main class="container"> {# Added main container for consistent padding and styling #}
+        <h1 class="text-3xl font-bold mb-6">Student Details: {{ student.first_name }} {{ student.last_name }}</h1>
+
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6"> {# Added div for details card styling #}
+            <p class="mb-2"><strong>Student ID:</strong> {{ student.student_id }}</p>
+            <p class="mb-2"><strong>Email:</strong> {{ student.email }}</p>
+            <p class="mb-2"><strong>Phone:</strong> {{ student.phone_number|default:"N/A" }}</p>
+            <p class="mb-2"><strong>Date of Birth:</strong> {{ student.date_of_birth|date:"F d, Y"|default:"N/A" }}</p>
+            <p class="mb-2"><strong>Gender:</strong> {{ student.get_gender_display|default:"N/A" }}</p>
+            <p class="mb-2"><strong>Major:</strong> {{ student.major|default:"N/A" }}</p>
+            <p class="mb-0"><strong>Enrollment Date:</strong> {{ student.enrollment_date|date:"F d, Y" }}</p>
+        </div>
+
+        {# Flex container for action buttons #}
+        <div class="flex flex-col sm:flex-row items-center sm:justify-start gap-4 mt-6 space-y-2 sm:space-y-0">
+            <a href="{% url 'student_update' pk=student.id %}" class="btn btn-primary w-full sm:w-auto">Edit Student</a>
+            <a href="{% url 'student_delete' pk=student.id %}" class="btn btn-danger w-full sm:w-auto">Delete Student</a>
+        </div>
+
+        <div class="mt-4"> {# Added div for spacing for the back button #}
+            <a href="{% url 'student_list' %}" class="btn btn-secondary">Back to Student List</a>
+        </div>
+    </main>
+{% endblock content %}

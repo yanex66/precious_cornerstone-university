@@ -1,0 +1,38 @@
+{# precious_cornerstone/UNIVERSITY/templates/UNIVERSITY/leave_detail.html #}
+{% extends 'UNIVERSITY/base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ university_name }} - Leave Details
+{% endblock title %}
+
+{% block content %}
+    <main class="container"> {# Added main container for consistent padding and styling #}
+        <h1 class="text-3xl font-bold mb-6">Leave Request Details</h1>
+
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6"> {# Added div for details card styling #}
+            <p class="mb-2"><strong>Employee:</strong> <a href="{% url 'employee_detail' leave.employee.id %}" class="text-blue-600 hover:text-blue-900">{{ leave.employee.first_name }} {{ leave.employee.last_name }}</a></p>
+            <p class="mb-2"><strong>Leave Type:</strong> {{ leave.get_leave_type_display }}</p>
+            <p class="mb-2"><strong>Start Date:</strong> {{ leave.start_date|date:"F d, Y" }}</p>
+            <p class="mb-2"><strong>End Date:</strong> {{ leave.end_date|date:"F d, Y" }}</p>
+            <p class="mb-2"><strong>Duration:</strong> {{ leave.duration_days }} day(s)</p>
+            <p class="mb-2"><strong>Reason:</strong> {{ leave.reason|default:"No reason provided." }}</p>
+            <p class="mb-2"><strong>Status:</strong> {{ leave.get_status_display }}</p>
+            <p class="mb-0"><strong>Requested On:</strong> {{ leave.request_date|date:"F d, Y H:i" }}</p>
+            {% if leave.approved_by %}
+                <p class="mt-2 mb-2"><strong>Approved By:</strong> {{ leave.approved_by }}</p>
+                <p class="mb-0"><strong>Approval Date:</strong> {{ leave.approval_date|date:"F d, Y" }}</p>
+            {% endif %}
+        </div>
+
+        {# Flex container for action buttons #}
+        <div class="flex flex-col sm:flex-row items-center sm:justify-start gap-4 mt-6 space-y-2 sm:space-y-0">
+            <a href="{% url 'leave_update' leave.id %}" class="btn btn-primary w-full sm:w-auto">Edit Request</a>
+            <a href="{% url 'leave_delete' leave.id %}" class="btn btn-danger w-full sm:w-auto">Delete Request</a>
+        </div>
+
+        <div class="mt-4"> {# Added div for spacing for the back button #}
+            <a href="{% url 'leave_list' %}" class="btn btn-secondary">Back to Leave List</a>
+        </div>
+    </main>
+{% endblock content %}

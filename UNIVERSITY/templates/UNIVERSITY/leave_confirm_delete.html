@@ -1,0 +1,19 @@
+{# precious_cornerstone/UNIVERSITY/templates/UNIVERSITY/leave_confirm_delete.html #}
+{% extends 'UNIVERSITY/base.html' %}
+
+{% block title %}
+    {{ university_name }} - Confirm Delete Leave
+{% endblock title %}
+
+{% block content %}
+    <h1>Confirm Leave Deletion</h1>
+    <p>Are you sure you want to delete this leave request for <strong>{{ leave.employee.first_name }} {{ leave.employee.last_name }}</strong> ({{ leave.leave_type }} from {{ leave.start_date|date:"F d, Y" }} to {{ leave.end_date|date:"F d, Y" }})?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, Delete</button>
+        <a href="{% url 'leave_detail' leave.id %}">No, Cancel</a>
+    </form>
+
+    <p><a href="{% url 'leave_list' %}">Back to Leave List</a></p>
+{% endblock content %}

@@ -1,0 +1,48 @@
+{# precious_cornerstone/UNIVERSITY/templates/UNIVERSITY/payroll_list.html #}
+
+{% extends 'UNIVERSITY/base.html' %}
+{% load static %}
+
+{% block title %}Payroll Records - {{ university_name }}{% endblock title %}
+
+{% block content %}
+    <div class="header-with-button">
+        <h2>Payroll Records</h2>
+        <a href="{% url 'payroll_create' %}" class="btn">Process New Payroll</a>
+    </div>
+
+    {% if payrolls %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Employee</th>
+                    <th>Pay Period</th>
+                    <th>Gross Salary</th>
+                    <th>Deductions</th>
+                    <th>Net Salary</th>
+                    <th>Processed On</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payroll in payrolls %}
+                    <tr>
+                        <td>{{ payroll.employee.first_name }} {{ payroll.employee.last_name }}</td>
+                        <td>{{ payroll.pay_period_start|date:"M d, Y" }} - {{ payroll.pay_period_end|date:"M d, Y" }}</td>
+                        <td>₦{{ payroll.gross_salary|floatformat:2 }}</td>
+                        <td>₦{{ payroll.deductions|floatformat:2 }}</td>
+                        <td>₦{{ payroll.net_salary|floatformat:2 }}</td>
+                        <td>{{ payroll.date_processed|date:"M d, Y h:i A" }}</td>
+                        <td class="flex-group">
+                            <a href="{% url 'payroll_detail' pk=payroll.pk %}" class="btn btn-secondary">View</a>
+                            {# You might add edit/delete buttons later #}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No payroll records found.</p>
+        <p><a href="{% url 'payroll_create' %}" class="btn">Process the first payroll record</a></p>
+    {% endif %}
+{% endblock content %}

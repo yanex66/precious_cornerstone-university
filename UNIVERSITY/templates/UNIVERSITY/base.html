@@ -1,0 +1,93 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ university_name }}</title>
+    <link href="{% static 'UNIVERSITY/css/tailwind.min.css' %}" rel="stylesheet">
+    <link href="{% static 'UNIVERSITY/css/style.css' %}" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+    <div class="overlay"></div>
+    <nav id="main-nav" class="main-nav">
+        <ul class="nav-links">
+            <li><a href="{% url 'index' %}" class="block py-2 px-3 text-white hover:text-yellow-300 transition duration-300">Home</a></li>
+            <li><a href="{% url 'course_list' %}" class="block py-2 px-3 text-white hover:text-yellow-300 transition duration-300">Courses</a></li>
+            <li><a href="{% url 'employee_list' %}" class="block py-2 px-3 text-white hover:text-yellow-300 transition duration-300">Employees</a></li>
+            <li><a href="{% url 'leave_list' %}" class="block py-2 px-3 text-white hover:text-yellow-300 transition duration-300">Leaves</a></li>
+            <li><a href="{% url 'payroll_list' %}" class="block py-2 px-3 text-white hover:text-yellow-300 transition duration-300">Payroll</a></li>
+            <li><a href="{% url 'student_list' %}" class="block py-2 px-3 text-white hover:text-yellow-300 transition duration-300">Students</a></li>
+        </ul>
+
+        <div class="auth-links">
+            {% if user.is_authenticated %}
+                <span class="user-greeting text-white text-lg">Hello, {{ user.username }}</span>
+                <a href="{% url 'admin:index' %}" class="button admin-btn py-2 px-4 bg-yellow-400 text-blue-900 font-semibold rounded-md hover:bg-yellow-500 transition duration-300">Admin</a>
+                <form action="{% url 'logout' %}" method="post" class="inline-form">
+                    {% csrf_token %}
+                    <button type="submit" class="button logout-btn py-2 px-4 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 transition duration-300">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" class="button login-btn py-2 px-4 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 transition duration-300">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <button id="mobile-menu-toggle" class="menu-toggle focus:outline-none">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path class="hamburger-line" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+        </svg>
+    </button>
+
+    <div id="page-wrapper" class="page-wrapper">
+        <header class="bg-blue-800 text-white p-4 shadow-md sticky top-0 z-50">
+            <div class="container header-container">
+                <div class="site-branding">
+                    <h1>
+                        <a href="{% url 'index' %}" class="flex items-center space-x-3 text-white no-underline">
+                            <img src="{% static 'image/WhatsApp Image 2025-07-24 at 18.13.12_4635f707.jpg' %}" alt="{{ university_name }} Logo" class="site-logo h-12 w-auto">
+                            <span class="site-title-text text-xl font-bold tracking-tight">{{ university_name }}</span>
+                        </a>
+                    </h1>
+                </div>
+                </div>
+        </header>
+
+        <main class="flex-grow container mx-auto p-4">
+            {% block content %}
+            {% endblock %}
+        </main>
+
+        <footer class="bg-blue-800 text-white p-4 text-center mt-auto">
+            <p>&copy; {% now "Y" %} {{ university_name }}. All rights reserved.</p>
+        </footer>
+    </div> <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const mainNav = document.getElementById('main-nav');
+            const overlay = document.querySelector('.overlay');
+            const pageWrapper = document.getElementById('page-wrapper'); // Get the page wrapper
+            const body = document.body;
+
+            if (mobileMenuToggle && mainNav && overlay && pageWrapper) {
+                mobileMenuToggle.addEventListener('click', function() {
+                    mainNav.classList.toggle('is-open');
+                    overlay.classList.toggle('is-active');
+                    pageWrapper.classList.toggle('shifted'); // Toggle class for the page wrapper
+                    body.classList.toggle('overflow-hidden');
+                });
+
+                overlay.addEventListener('click', function() {
+                    mainNav.classList.remove('is-open');
+                    overlay.classList.remove('is-active');
+                    pageWrapper.classList.remove('shifted'); // Remove class from page wrapper
+                    body.classList.remove('overflow-hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{# precious_cornerstone/UNIVERSITY/templates/UNIVERSITY/leave_form.html #}
+{% extends 'UNIVERSITY/base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ university_name }} - {% if form.instance.pk %}Edit Leave{% else %}Submit Leave Request{% endif %}
+{% endblock title %}
+
+{% block content %}
+    <main class="container"> {# Added main container for consistent padding and styling #}
+        <h1 class="text-3xl font-bold mb-6">{% if form.instance.pk %}Edit Leave Request{% else %}Submit New Leave Request{% endif %}</h1>
+
+        <form method="post" class="bg-white p-6 rounded-lg shadow-md"> {# Added form styling classes #}
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary mt-4">{% if form.instance.pk %}Update Request{% else %}Submit Request{% endif %}</button> {# Styled the submit button #}
+        </form>
+
+        <div class="mt-4"> {# Added div for spacing #}
+            <a href="{% url 'leave_list' %}" class="btn btn-secondary">Back to Leave List</a> {# Applied secondary button style #}
+        </div>
+    </main>
+{% endblock content %}

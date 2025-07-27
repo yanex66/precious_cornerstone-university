@@ -1,0 +1,36 @@
+{# precious_cornerstone/UNIVERSITY/templates/UNIVERSITY/course_detail.html #}
+{% extends 'UNIVERSITY/base.html' %} {# Ensure this path is correct for your base.html #}
+{% load static %}
+
+{% block title %}
+    {{ course.title }} - {{ university_name }}
+{% endblock title %}
+
+{% block content %}
+<main class="container">
+    <div class="course-detail-card">
+        <h1>{{ course.title }} ({{ course.code }})</h1>
+        <p class="detail-label">Department:</p>
+        <p class="detail-value">{{ course.department }}</p>
+
+        <p class="detail-label">Credits:</p>
+        <p class="detail-value">{{ course.credits }}</p>
+
+        {% if course.description %}
+            <p class="detail-label">Description:</p>
+            <p class="detail-value course-description-full">{{ course.description }}</p>
+        {% else %}
+            <p class="detail-value">No detailed description available.</p>
+        {% endif %}
+
+        <p class="detail-label">Status:</p>
+        <p class="detail-value">{% if course.is_active %}Active{% else %}Inactive{% endif %}</p>
+
+        <div class="detail-actions">
+            <a href="{% url 'course_list' %}" class="btn btn-secondary">Back to Course List</a>
+            {# Optional: Add an "Edit Course" button for staff/admin users #}
+            {# <a href="{% url 'course_update' course.pk %}" class="btn btn-primary">Edit Course</a> #}
+        </div>
+    </div>
+</main>
+{% endblock content %}

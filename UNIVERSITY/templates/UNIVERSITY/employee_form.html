@@ -1,0 +1,23 @@
+{# precious_cornerstone/UNIVERSITY/templates/UNIVERSITY/employee_form.html #}
+{% extends 'UNIVERSITY/base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ university_name }} - {% if form.instance.pk %}Edit Employee{% else %}Add Employee{% endif %}
+{% endblock title %}
+
+{% block content %}
+    <main class="container"> {# Added main container for consistent padding and styling #}
+        <h1 class="text-3xl font-bold mb-6">{% if form.instance.pk %}Edit Employee: {{ form.instance.first_name }} {{ form.instance.last_name }}{% else %}Add New Employee{% endif %}</h1>
+
+        <form method="post" class="bg-white p-6 rounded-lg shadow-md"> {# Added form styling classes #}
+            {% csrf_token %} {# Django security feature: protects against Cross Site Request Forgeries #}
+            {{ form.as_p }} {# Renders form fields as paragraphs #}
+            <button type="submit" class="btn btn-primary mt-4">{% if form.instance.pk %}Update Employee{% else %}Add Employee{% endif %}</button> {# Styled the submit button #}
+        </form>
+
+        <div class="mt-4"> {# Added div for spacing #}
+            <a href="{% url 'employee_list' %}" class="btn btn-secondary">Back to Employee List</a> {# Applied secondary button style #}
+        </div>
+    </main>
+{% endblock content %}

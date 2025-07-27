@@ -1,0 +1,35 @@
+{# precious_cornerstone/UNIVERSITY/templates/UNIVERSITY/payroll_detail.html #}
+{% extends 'UNIVERSITY/base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ university_name }} - Payroll Details for {{ payroll.employee.first_name }} {{ payroll.employee.last_name }}
+{% endblock title %}
+
+{% block content %}
+    <main class="container"> {# Added main container for consistent padding and styling #}
+        <h1 class="text-3xl font-bold mb-6">Payroll Details</h1>
+
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6"> {# Added div for details card styling #}
+            <p class="mb-2"><strong>Employee:</strong> <a href="{% url 'employee_detail' payroll.employee.id %}" class="text-blue-600 hover:text-blue-900">{{ payroll.employee.first_name }} {{ payroll.employee.last_name }}</a></p>
+            <p class="mb-2"><strong>Pay Period Start:</strong> {{ payroll.pay_period_start_date|date:"F d, Y" }}</p>
+            <p class="mb-2"><strong>Pay Period End:</strong> {{ payroll.pay_period_end_date|date:"F d, Y" }}</p>
+            <p class="mb-2"><strong>Gross Salary:</strong> ${{ payroll.gross_salary|floatformat:2 }}</p>
+            <p class="mb-2"><strong>Deductions:</strong> ${{ payroll.deductions|floatformat:2 }}</p>
+            <p class="mb-2"><strong>Net Salary:</strong> ${{ payroll.net_salary|floatformat:2 }}</p>
+            <p class="mb-0"><strong>Payment Date:</strong> {{ payroll.payment_date|date:"F d, Y" }}</p>
+        </div>
+
+        {# Flex container for action buttons #}
+        <div class="flex flex-col sm:flex-row items-center sm:justify-start gap-4 mt-6 space-y-2 sm:space-y-0">
+            {# Assuming you'll have a payroll_update URL for editing payrolls #}
+            {# <a href="{% url 'payroll_update' pk=payroll.id %}" class="btn btn-primary w-full sm:w-auto">Edit Payroll</a> #}
+            {# Assuming you'll have a payroll_delete URL for deleting payrolls #}
+            {# <a href="{% url 'payroll_delete' pk=payroll.id %}" class="btn btn-danger w-full sm:w-auto">Delete Payroll</a> #}
+        </div>
+
+        <div class="mt-4"> {# Added div for spacing for the back button #}
+            <a href="{% url 'payroll_list' %}" class="btn btn-secondary">Back to Payroll List</a>
+        </div>
+    </main>
+{% endblock content %}
